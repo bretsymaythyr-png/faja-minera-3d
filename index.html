@@ -1,1 +1,100 @@
-m�눧u�a�iM�˜���z�݊�����
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101923">
+  <title>Faja minera · Simulación 3D</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">F<span>2</span></span><div><strong>FAJA MINERA</strong><small>SIMULACIÓN INTERACTIVA</small></div></div>
+    <div class="top-right"><span class="top-dot"></span><span>PROYECTO DE FÍSICA II</span><span class="tag">MODELO DIDÁCTICO</span></div>
+  </header>
+
+  <main class="page">
+    <div class="intro"><div><div class="eyebrow"><span></span> ENERGÍA Y MOVIMIENTO</div><h1>El futuro del transporte minero<span>.</span></h1><p>Explora la operación en 3D y descubre cómo el control de velocidad puede transformar el consumo energético.</p></div><div class="intro-note"><strong>01 / 03</strong><span>Explora el sistema</span></div></div>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <section class="panel control-panel" aria-labelledby="flow-title">
+          <div class="section-top"><div><span class="overline">LECTURA DEL SENSOR</span><h2 id="flow-title">Peso del mineral</h2></div><span class="number">01</span></div>
+          <p class="help">Ingresa cuánto mineral llega durante un intervalo. El sistema calculará el flujo y ajustará la faja automática.</p>
+          <form id="weightForm" novalidate>
+            <div class="weight-fields">
+              <label for="weightInput">Mineral <span>kg</span><input id="weightInput" type="number" min="0" step="any" value="2000" inputmode="decimal" required></label>
+              <label for="intervalInput">Tiempo <span>segundos</span><input id="intervalInput" type="number" min="0.1" step="any" value="6" inputmode="decimal" required></label>
+            </div>
+            <button type="submit" class="apply-weight">Aplicar lectura <span>→</span></button>
+            <p id="readingFeedback" class="reading-feedback" aria-live="polite">2 000 kg en 6 s equivalen a 1 200 t/h.</p>
+          </form>
+          <div class="flow-label">FLUJO DE ENTRADA <span>PROMEDIO</span></div>
+          <div class="flow-reading"><strong id="flowValue">1 200</strong><span>t/h</span></div>
+          <input id="flowRange" type="range" min="0" max="2400" step="any" value="1200" aria-label="Flujo de mineral en toneladas por hora">
+          <div class="range-label"><span>0 t/h</span><span>2 400 t/h</span></div>
+          <div class="presets" aria-label="Valores de flujo"><button type="button" data-flow="600">Bajo</button><button type="button" data-flow="1200" class="selected">Medio</button><button type="button" data-flow="2400">Alto</button></div>
+          <div class="flow-note"><span>●</span> Entrada idéntica en ambas fajas</div>
+        </section>
+
+        <section class="panel signal-panel" aria-labelledby="signal-title">
+          <div class="section-top"><div><span class="overline">ASÍ ACTÚA LA MEJORA</span><h2 id="signal-title">Cadena de control</h2></div><span class="number">02</span></div>
+          <div class="signal-list">
+            <div class="signal"><span class="signal-icon">◎</span><div><strong>Sensor de pesaje</strong><small id="sensorPeriod">Mineral durante 6 s</small></div><b id="sensorStatus">2 000 kg</b></div>
+            <div class="connector"></div>
+            <div class="signal"><span class="signal-icon">▦</span><div><strong>Controlador PLC</strong><small>Calcula la velocidad objetivo</small></div><b id="targetStatus">1,18 m/s</b></div>
+            <div class="connector"></div>
+            <div class="signal"><span class="signal-icon">ϟ</span><div><strong>Variador</strong><small>Regula el motor de la faja</small></div><b id="freqStatus">35 Hz</b></div>
+          </div>
+        </section>
+        <details class="assumptions panel"><summary>Datos y fórmula del modelo <span>+</span></summary><div><p>La lectura representa la masa de mineral recibida en el intervalo indicado. Se mantiene su flujo promedio hasta la siguiente lectura: <strong>flujo (t/h) = masa (kg) ÷ tiempo (s) × 3,6</strong>.</p><p>Supuestos: faja de 180 m con <strong>10° de inclinación</strong> (elevación aproximada: 31,3 m), velocidad máxima de 2 m/s y capacidad de 2 400 t/h. No son las medidas de una mina concreta.</p><p>Potencia didáctica: <strong>P = (150 + 400 × M/60) × v/2 + M × 9,81 × sen(10°) × v</strong>, en kW. M es la masa sobre la banda en toneladas y v la velocidad en m/s. El segundo término aproxima la potencia mecánica ideal para elevar el material.</p><p>Energía: <strong>E = Σ(P × tiempo)</strong>, expresada en kWh. No se incluye la eficiencia del motor ni se han medido los parámetros en una instalación real.</p><p>El control conserva una velocidad mínima de 0,6 m/s; se supone 60 Hz a velocidad máxima. El tiempo está acelerado: 1 segundo real equivale aproximadamente a 10 segundos simulados.</p></div></details>
+      </aside>
+
+      <div class="content">
+        <section class="panel scene-panel" aria-labelledby="scene-title">
+          <div class="scene-head"><div><span class="overline">DOS MODOS · UNA MISMA ENTRADA</span><h2 id="scene-title">Mineral en ascenso</h2></div><div class="scene-actions"><button class="pause-button compatible-button" id="compatibleMode" type="button" title="Cambiar el modo de gráficos">Modo compatible</button><button class="icon-button" id="viewReset" type="button" title="Restablecer vista" aria-label="Restablecer vista">↺</button><button class="pause-button" id="toggleRun" type="button"><span>Ⅱ</span> Pausar</button></div></div>
+          <div class="scene-wrap" id="sceneWrap"><div id="scene3d" role="img" aria-label="Dos fajas mineras inclinadas en 3D suben rocas; una convencional y otra con control automático"></div><div id="graphicsError" class="graphics-error" hidden>No se pudo iniciar la vista 3D. Prueba el botón «Modo compatible» que está arriba de la imagen.</div><div class="scene-legend"><span><i class="dot conventional"></i> CONVENCIONAL</span><span><i class="dot improved"></i> CON CONTROL</span></div><div class="slope-badge">↗ &nbsp; INCLINACIÓN 10°</div><div class="scene-hint"><span>↕</span> Arrastra para girar · rueda para acercar</div><div class="scene-time"><span class="live-dot"></span> <span id="timeLabel">00:00</span> <small>TIEMPO SIMULADO</small></div></div>
+          <div class="scene-explanation"><span class="explanation-icon">i</span><p><strong>¿Qué estás viendo?</strong> Las rocas entran por la parte baja y suben hasta la descarga. Ambas fajas reciben la misma entrada; la verde ajusta su velocidad. El ángulo es un supuesto de esta representación.</p></div>
+        </section>
+
+        <section class="compare" aria-label="Resultados comparativos">
+          <article class="panel result-card normal-card"><div class="result-title"><div><span class="overline">REFERENCIA</span><h3><i class="dot conventional"></i> Convencional</h3></div><span class="result-pill amber">VELOCIDAD FIJA</span></div><div class="metrics"><div><small>VELOCIDAD</small><strong id="normalSpeed">2,00 <em>m/s</em></strong></div><div><small>POTENCIA ESTIMADA</small><strong id="normalPower">150 <em>kW</em></strong></div><div><small>ENERGÍA ACUMULADA</small><strong id="normalEnergy">0,00 <em>kWh</em></strong></div><div><small>MATERIAL DESCARGADO</small><strong id="normalOutput">0,00 <em>t</em></strong></div></div><div class="card-foot">En alimentación: <b id="normalQueue">0,00 t</b> <span>·</span> Sobre la faja: <b id="normalLoad">0,00 t</b></div></article>
+          <article class="panel result-card improved-card"><div class="result-title"><div><span class="overline">PROPUESTA</span><h3><i class="dot improved"></i> Con control automático</h3></div><span class="result-pill teal">VELOCIDAD VARIABLE</span></div><div class="metrics"><div><small>VELOCIDAD</small><strong id="autoSpeed">1,18 <em>m/s</em></strong></div><div><small>POTENCIA ESTIMADA</small><strong id="autoPower">88 <em>kW</em></strong></div><div><small>ENERGÍA ACUMULADA</small><strong id="autoEnergy">0,00 <em>kWh</em></strong></div><div><small>MATERIAL DESCARGADO</small><strong id="autoOutput">0,00 <em>t</em></strong></div></div><div class="card-foot">En alimentación: <b id="autoQueue">0,00 t</b> <span>·</span> Sobre la faja: <b id="autoLoad">0,00 t</b></div></article>
+        </section>
+
+
+        <section class="panel analysis-panel" id="proyeccion" aria-labelledby="analysis-title">
+          <div class="analysis-head"><div><span class="overline">DECISIONES CON DATOS · ESCENARIO AJUSTABLE</span><h2 id="analysis-title">Centro de resultados</h2><p>Proyección anual para el flujo seleccionado. Cambia los supuestos y observa el impacto en tiempo real.</p></div><span class="scenario-pill">ESCENARIO DIDÁCTICO</span></div>
+          <div class="explainer-flow"><span>① Mineral recibido</span><span>② El PLC ajusta la velocidad</span><span>③ Menor consumo estimado</span><span>④ Impacto económico</span></div>
+          <div class="input-grid" aria-label="Supuestos de la proyección">
+            <label>Tarifa eléctrica <small>S/ por kWh</small><input id="tariff" type="number" min="0" step="0.01" value="0.45"></label>
+            <label>Horas de operación <small>h por día</small><input id="hours" type="number" min="0" max="24" step="0.5" value="20"></label>
+            <label>Días de operación <small>días por año</small><input id="days" type="number" min="0" max="366" step="1" value="330"></label>
+            <label>Inversión inicial <small>S/</small><input id="investment" type="number" min="0" step="1000" value="200000"></label>
+            <label>Mantenimiento adicional <small>S/ por año</small><input id="maintenance" type="number" min="0" step="100" value="12000"></label>
+            <label>Vida útil estimada <small>años</small><input id="life" type="number" min="1" max="40" step="1" value="10"></label>
+            <label>Impuesto supuesto <small>% sobre utilidad positiva</small><input id="tax" type="number" min="0" max="100" step="0.1" value="29.5"></label>
+          </div>
+          <p class="inputs-note">Ejemplo editable, no una tarifa ni cotización real. Se asume flujo constante y las mismas horas para ambas alternativas.</p><p id="inputError" class="input-error" role="alert" hidden>Revisa los valores: deben ser válidos y estar dentro de los límites indicados.</p>
+          <div class="impact-grid"><div class="impact-card"><span>ENERGÍA QUE SE EVITARÍA</span><strong id="savingKwh">—</strong><small>kWh / año</small></div><div class="impact-card"><span>AHORRO EN ELECTRICIDAD</span><strong id="savingMoney">—</strong><small>S/ / año, antes de otros costos</small></div><div class="impact-card"><span>CAMBIO EN CONSUMO</span><strong id="savingPct">—</strong><small>respecto al sistema convencional</small></div><div class="impact-card"><span>RECUPERACIÓN SIMPLE</span><strong id="payback">—</strong><small>sobre flujo anual estimado</small></div></div>
+          <div class="visual-grid"><div class="visual-card"><h3>¿Cuánta electricidad se usaría?</h3><p>Comparación anual · kWh</p><div class="bar-label"><span>Convencional</span><strong id="baseEnergy">—</strong></div><div class="bar-track"><div id="baseBar" class="bar amber-bar"></div></div><div class="bar-label"><span>Control automático</span><strong id="autoEnergyAnnual">—</strong></div><div class="bar-track"><div id="autoBar" class="bar teal-bar"></div></div><div class="visual-foot" id="energyExplain">—</div></div>
+          <div class="visual-card"><h3>De la energía al costo</h3><p>El mismo periodo y la misma tarifa para ambos sistemas.</p><div class="cost-compare"><div><span>Convencional</span><strong id="baseCost">—</strong><small>S/ por año</small></div><div><span>Con control</span><strong id="autoCost">—</strong><small>S/ por año</small></div></div><div class="visual-foot">Potencia estimada en régimen: <b id="powerPair">—</b></div></div></div>
+          <div class="result-table-head"><div><span class="overline">CASO DE INVERSIÓN</span><h3>Estado de resultados incremental proyectado</h3><p>Impacto anual atribuible al proyecto; no representa los ingresos o la utilidad total de una mina.</p></div></div>
+          <div class="table-scroll"><table><thead><tr><th>Concepto</th><th>Proyección anual</th></tr></thead><tbody><tr><td>Ahorro bruto por electricidad</td><td id="tSavings">—</td></tr><tr><td>− Mantenimiento adicional</td><td id="tMaintenance">—</td></tr><tr><td>− Depreciación anual estimada</td><td id="tDep">—</td></tr><tr class="subtotal"><td>Resultado antes de impuestos</td><td id="tEbit">—</td></tr><tr><td>− Impuesto estimado</td><td id="tTax">—</td></tr><tr class="total"><td>Resultado neto incremental</td><td id="tNet">—</td></tr></tbody></table></div>
+          <div class="cash-note"><strong>Flujo anual estimado: <span id="cashFlow">—</span></strong><p>Ahorro eléctrico − mantenimiento − impuesto. La depreciación se excluye del flujo porque no es un desembolso anual. La recuperación simple no considera valor del dinero en el tiempo.</p></div>
+          <details class="method"><summary>Cómo se calcula esta proyección</summary><p>La potencia se estima para operación estable con el flujo seleccionado: masa sobre la faja = flujo × 180 m ÷ (3 600 × velocidad). Se utiliza el mismo modelo didáctico de la simulación y se multiplica por horas al día y días al año. El cálculo supone alimentación uniforme; no incorpora eficiencia del motor, tarifa por demanda, cambios de producción ni otros costos.</p><p>Depreciación lineal: inversión ÷ vida útil, sin valor residual. Impuesto: tasa ingresada aplicada solo a resultados positivos, sin compensación de pérdidas. El flujo es ahorro − mantenimiento − impuesto. La recuperación simple es inversión ÷ flujo anual positivo. Para un proyecto real, validar carga, curva de potencia, costos y tributación.</p></details>
+        </section>
+
+        <section class="panel chart-panel"><div class="chart-header"><div><span class="overline">COMPARACIÓN DURANTE LA OPERACIÓN</span><h2>Energía acumulada estimada</h2><p>La gráfica se construye mientras avanza la simulación.</p></div><button id="reset" type="button" class="reset-button">↺ &nbsp; Reiniciar</button></div><div class="chart-legend"><span><i class="dot conventional"></i> Convencional</span><span><i class="dot improved"></i> Con control</span><span class="unit">kWh</span></div><canvas id="energyChart" aria-label="Gráfica de energía acumulada estimada de ambos sistemas"></canvas><div class="comparison-note">Ambas fajas reciben el mismo material de entrada. La descarga puede ser distinta durante el recorrido: revisa el material que aún está sobre cada faja o en alimentación.</div></section>
+        <footer>Simulación con valores supuestos para explicar la propuesta. No representa un ahorro medido ni una instalación minera real. <span>FÍSICA II · 2026</span></footer>
+      </div>
+    </div>
+  </main>
+  <script src="vendor/three.min.js"></script>
+  <script src="rock-texture.js"></script>
+  <script src="software3d.js"></script>
+  <script src="simulation.js"></script>
+  <script src="app.js"></script>
+  <script src="business.js"></script>
+</body>
+</html>

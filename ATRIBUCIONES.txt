@@ -1,1 +1,4 @@
-m«ë€D€Tƒ+q´Ú,¹È_ŠW¨­Ø«yËh¯
+Textura de roca Â«Rock 05Â»: Poly Haven, https://polyhaven.com/a/rock_05
+Licencia: CC0. La textura fue reducida de tamaÃ±o para esta aplicaciÃ³n.
+
+Three.js 0.160.0: licencia MIT incluida en vendor/LICENSE.txt.
